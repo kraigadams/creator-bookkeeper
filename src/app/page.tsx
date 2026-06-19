@@ -77,6 +77,7 @@ export default function LedgerPage() {
   const [attachments, setAttachments] = useState<Record<number, Array<{ id: number; originalName: string; mimeType: string; fileSize: number }>>>({});
   const [attachUploading, setAttachUploading] = useState(false);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const [showRawDesc, setShowRawDesc] = useState<Set<number>>(new Set());
   const [bulkCategory, setBulkCategory] = useState<string>("");
   const [bulkWorking, setBulkWorking] = useState(false);
 
@@ -558,12 +559,23 @@ export default function LedgerPage() {
                   <td className="px-3 py-2 text-stone-400 whitespace-nowrap text-xs">{shortDate(t.date)}</td>
                   <td className="px-3 py-2 max-w-xs">
                     <div className="flex items-center gap-2 min-w-0">
+                      <div className="min-w-0 flex-1">
+                        <button
+                          onClick={() => setShowRawDesc(prev => { const next = new Set(prev); next.has(t.id) ? next.delete(t.id) : next.add(t.id); return next; })}
+                          className="truncate text-left hover:text-blue-600 dark:hover:text-blue-400 transition-colors w-full"
+                        >
+                          {showRawDesc.has(t.id)
+                            ? <span className="text-xs text-stone-400 dark:text-stone-500 break-all whitespace-normal">{t.originalDescription}</span>
+                            : (t.cleanDescription || t.originalDescription)
+                          }
+                        </button>
+                      </div>
                       <button
-                        title={t.originalDescription}
                         onClick={() => setExpandedRow(expandedRow === t.id ? null : t.id)}
-                        className="truncate text-left hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                        className="flex-shrink-0 text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 transition-colors"
+                        title="Attachments"
                       >
-                        {t.cleanDescription || t.originalDescription}
+                        <svg className={`w-3.5 h-3.5 transition-transform ${expandedRow === t.id ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                       </button>
                       {(attachments[t.id]?.length ?? 0) > 0 && (
                         <span className="flex-shrink-0 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded px-1.5 py-0.5 font-medium">

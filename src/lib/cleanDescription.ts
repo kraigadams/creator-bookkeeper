@@ -2,7 +2,31 @@
 // Handles Chase ACH format: "ORIG CO NAME:GOOGLE ORIG ID:..."
 // Falls back to title-casing the raw string if no known pattern matches.
 
+const MERCHANT_MAP: Array<[RegExp, string]> = [
+  [/amazon.*associates/i, "Amazon Associates"],
+  [/amazon\.com\s*servi/i, "Amazon Associates"],
+  [/amazon\s*japan/i, "Amazon Japan"],
+  [/amazon\s*europe/i, "Amazon Europe"],
+  [/amazon\s*mktplace/i, "Amazon Marketplace"],
+  [/amazon/i, "Amazon"],
+  [/google.*youtube/i, "Google / YouTube"],
+  [/google\s*pay(ment)?/i, "Google Payment"],
+  [/apple\.com\/bill/i, "Apple"],
+  [/apple\s+card/i, "Apple Card"],
+  [/paypal/i, "PayPal"],
+  [/venmo/i, "Venmo"],
+  [/zelle/i, "Zelle"],
+  [/shopify/i, "Shopify"],
+  [/stripe/i, "Stripe"],
+  [/squarespace/i, "Squarespace"],
+];
+
 export function cleanDescription(raw: string): string {
+  // Named merchant lookup before any other processing
+  for (const [pattern, name] of MERCHANT_MAP) {
+    if (pattern.test(raw)) return name;
+  }
+
   // Chase ACH: "ORIG CO NAME:GOOGLE ORIG ID:..."
   const origCoName = raw.match(/ORIG CO NAME:([^O][^\s](?:[^O]|O(?!RIG))*?)(?:\s+ORIG|\s+DESC|\s+CO ENTRY|$)/i);
   if (origCoName) return toTitleCase(origCoName[1].trim());

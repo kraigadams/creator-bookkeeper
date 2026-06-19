@@ -12,9 +12,9 @@ Local-first bookkeeping for solo creators and freelancers. Import bank CSVs, cat
 |---|---|
 | ![Ledger dark mode](public/screenshots/ledger-dark.png) | ![Ledger light mode](public/screenshots/ledger-light.png) |
 
-| P&L Report | Quarterly Tax Estimates |
-|---|---|
-| ![P&L report](public/screenshots/pnl-dark.png) | ![Quarterly estimates](public/screenshots/pnl-quarterly.png) |
+| Quarterly Tax Estimates |
+|---|
+| ![Quarterly estimates](public/screenshots/pnl-quarterly.png) |
 
 ---
 

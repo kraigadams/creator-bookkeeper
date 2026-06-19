@@ -38,6 +38,21 @@ CREATE TABLE IF NOT EXISTS transactions (
 
 CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(date);
 CREATE INDEX IF NOT EXISTS idx_transactions_batch ON transactions(import_batch_id);
+
+CREATE TABLE IF NOT EXISTS attachments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  transaction_id INTEGER NOT NULL REFERENCES transactions(id) ON DELETE CASCADE,
+  filename TEXT NOT NULL,
+  original_name TEXT NOT NULL,
+  mime_type TEXT NOT NULL,
+  file_size INTEGER NOT NULL DEFAULT 0,
+  uploaded_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_attachments_transaction ON attachments(transaction_id);
+
+-- Add columns introduced after initial release (safe to run on existing DBs)
+ALTER TABLE transactions ADD COLUMN IF NOT EXISTS bank_type TEXT;
 `);
 
 console.log("Database initialized at", DB_PATH);
