@@ -6,6 +6,18 @@ Local-first bookkeeping for solo creators and freelancers. Import bank CSVs, cat
 
 ---
 
+## Screenshots
+
+| Ledger (dark) | Ledger (light) |
+|---|---|
+| ![Ledger dark mode](public/screenshots/ledger-dark.png) | ![Ledger light mode](public/screenshots/ledger-light.png) |
+
+| P&L Report | Quarterly Tax Estimates |
+|---|---|
+| ![P&L report](public/screenshots/pnl-dark.png) | ![Quarterly estimates](public/screenshots/pnl-quarterly.png) |
+
+---
+
 ## Features
 
 - **CSV import** — upload bank or credit card exports, map columns visually, preview before committing
